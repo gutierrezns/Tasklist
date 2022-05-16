@@ -25,7 +25,7 @@ namespace BE_Netcore.Data
 
         public Task GetTask(int id)
         {
-            throw new System.NotImplementedException();
+            return _context.Task.FirstOrDefault(x => x.Id == id);
         }
 
         public IEnumerable<Task> GetTasks()
@@ -36,6 +36,11 @@ namespace BE_Netcore.Data
         public bool SaveChanges()
         {
             return _context.SaveChanges() >= 0;
+        }
+
+        public void UpdateTask(Task task)
+        {
+            _context.Update(task);
         }
     }
 }

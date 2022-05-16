@@ -40,90 +40,35 @@ namespace BE_Netcore.Controllers
                         {
                             _repository.CreateTask(new Models.Task() { Title = titulo });
                         };
+                    _repository.SaveChanges();
                 }
             }
 
             return Ok(_repository.GetTasks().ToList()); 
         }
-        // PUT: api/Tasks/5
+
+        //PUT: api/Tasks/5
         
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutTask(int id, Models.Task task)
-        //{
-        //    if (id != task.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTask(int id, Models.Task task)
+        {
 
-        //    _context.Entry(task).State = EntityState.Modified;
+            var task_repo = _repository.GetTask(id);
+            if (task_repo == null)
+            {
+                return NotFound();
+            }
+            if (id != task.Id)
+            {
+                return BadRequest();
+            }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!TaskExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+            task_repo.Title = task.Title;
+            task_repo.IsCompleted = task.IsCompleted;
 
-        //    return NoContent();
-        //}
+            _repository.SaveChanges();
 
-        //private bool TaskExists(int id)
-        //{
-        //    return _context.Task.Any(e => e.Id == id);
-        //}
-
-        //// GET: api/Tasks/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<Models.Task>> GetTask(int id)
-        //{
-        //    var task = await _context.Task.FindAsync(id);
-
-        //    if (task == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return task;
-        //}
-
-
-
-        //// POST: api/Tasks
-        //// To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        //[HttpPost]
-        //public async Task<ActionResult<Models.Task>> PostTask(Models.Task task)
-        //{
-        //    _context.Task.Add(task);
-        //    await _context.SaveChangesAsync();
-
-        //    return CreatedAtAction("GetTask", new { id = task.Id }, task);
-        //}
-
-        //// DELETE: api/Tasks/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteTask(int id)
-        //{
-        //    var task = await _context.Task.FindAsync(id);
-        //    if (task == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    _context.Task.Remove(task);
-        //    await _context.SaveChangesAsync();
-
-        //    return NoContent();
-        //}
-
-
+            return NoContent();
+        }
     }
 }

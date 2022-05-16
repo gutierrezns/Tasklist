@@ -9,7 +9,7 @@ namespace BE_Netcore.Data
         void CreateTask(Task task);
         Task GetTask(int id);
         IEnumerable<Task> GetTasks();
-       // Task UpdateTask(I)
+        void UpdateTask(Task task);
     }
 }
     
