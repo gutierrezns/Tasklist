@@ -1,7 +1,3 @@
-Upload the solution/s to a public git repository indicating how to run it. The
-README file instructions should reflect all the necessary steps to be able to run the
-application.
-
 pre requirements:
 - VisualStudio 2022 with ASP.NET and web develpment and .NET 5.0 Runtime
 - Nodejs
