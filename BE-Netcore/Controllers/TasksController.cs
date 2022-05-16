@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using BE_Netcore.Data;
-using BE_Netcore.Models;
-using BE_Netcore.Service;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace BE_Netcore.Controllers
 {
@@ -17,9 +15,6 @@ namespace BE_Netcore.Controllers
     {
         private readonly ITaskRepo _repository;
 
-        //  private readonly BE_NetcoreContext _context;
-        //  private readonly HipsumService _service;
-        //private readonly MockTaskRepo _repository = new MockTaskRepo();
         public TasksController(ITaskRepo repository)
         {
             _repository = repository;
@@ -27,11 +22,28 @@ namespace BE_Netcore.Controllers
 
         // GET: api/Tasks
         [HttpGet]
-        public ActionResult<IEnumerable<Models.Task>> GetTask()
+        public async Task<ActionResult<IEnumerable<Models.Task>>> GetTasksAsync()
         {
-            var tasklist = _repository.GetTasks().ToList();
 
-            return Ok(tasklist); 
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("http://hipsum.co/api/?type=hipster-centric&sentences=3")) //TODO: replace sentances with random value
+                {
+
+                    var apiResponse = await response.Content.ReadAsStringAsync();
+
+                    var titulos = JsonConvert.DeserializeObject<List<string>>(apiResponse).First();
+
+                    var listatitulos = titulos.Split('.', StringSplitOptions.RemoveEmptyEntries);
+
+                        foreach (var titulo in listatitulos)
+                        {
+                            _repository.CreateTask(new Models.Task() { Title = titulo });
+                        };
+                }
+            }
+
+            return Ok(_repository.GetTasks().ToList()); 
         }
         // PUT: api/Tasks/5
         
