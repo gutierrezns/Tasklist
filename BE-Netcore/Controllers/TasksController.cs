@@ -64,7 +64,7 @@ namespace BE_Netcore.Controllers
             }
 
             task_repo.Title = task.Title;
-            task_repo.IsCompleted = task.IsCompleted;
+            task_repo.IsCompleted = true;
 
             _repository.SaveChanges();
 

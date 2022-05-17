@@ -15,8 +15,9 @@ export const getAll = async ({ path, body = {} }) => {
 }
 
 export const putTask = async ({ path, body = {} }) => {
+    console.log(body)
     try {
-        const res = await requester.put(path, { params: body });
+        const res = await requester.put(path, body );
         return res.data;
     } catch (error) {
         console.log('requester error')

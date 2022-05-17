@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useStyles } from "./styles";
 import Dialog from '../alert-dialog'
 
-// import { useTasks } from "../../context/tasks-context";
+import { useTasks } from "../../context/tasks-context";
 import TasksService from "../../services/taskServices";
 
 
@@ -16,7 +16,7 @@ export default function Task({ task }) {
     const { id, title, isCompleted } = task;
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    // const { tasks, setTasks } = useTasks();
+     const { tasks, setTasks } = useTasks();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -36,7 +36,7 @@ export default function Task({ task }) {
             console.log(error)
         }
        
-        // setTasks(tasks.filter((task) => task.id !== id));
+         setTasks(tasks.filter((task) => task.id !== id));
     };
 
     return (

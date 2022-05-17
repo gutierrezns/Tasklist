@@ -24,7 +24,11 @@ export default class service {
     try {
       const taskResponse = await putTask({
         path: `api/tasks/${task.id}`,
-        body: {task}
+        body: {
+          id: task.id,
+          title: task.title,
+          isCompletes: true
+          }
       });
       return taskResponse;
     } catch (error) {
