@@ -1,5 +1,5 @@
-import React from 'react';
-import './Alert-dialog.less';
+/* eslint-disable react/prop-types */
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,7 +15,7 @@ const AlertDialog = ({open, handleClose, handleComplete, task}) => {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          Task #{task.id} - {task.title}
+          Task {task.id}: {task.title}
         </DialogTitle>
         <DialogActions>
           <Button onClick={handleComplete}>Completed</Button>

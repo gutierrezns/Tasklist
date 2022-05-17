@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 
 import Card from '@mui/material/Card';
@@ -7,14 +8,15 @@ import Typography from '@mui/material/Typography';
 import { useStyles } from "./styles";
 import Dialog from '../alert-dialog'
 
+// import { useTasks } from "../../context/tasks-context";
 import TasksService from "../../services/taskServices";
-import { useTasks } from "../../context/tasks-context";
+
 
 export default function Task({ task }) {
-    const { id, title } = task;
+    const { id, title, isCompleted } = task;
     const classes = useStyles();
     const [open, setOpen] = useState(false);
-    const { setTasks } = useTasks();
+    // const { tasks, setTasks } = useTasks();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -24,11 +26,17 @@ export default function Task({ task }) {
         setOpen(false);
     };
 
-    const handleComplete = () => {
-        const updatedTask = TasksService.INSTANCE.delete(task?.id);
-        if (updatedTask) {
-          setTasks(TasksService.INSTANCE.getAll());
+    const handleComplete = async () => {
+        try {
+          const taskCompleted = await TasksService.INSTANCE.completeTask(task);
+          if (taskCompleted) {
+              console.log('task completed successfully')
+          }
+        } catch (error) {
+            console.log(error)
         }
+       
+        // setTasks(tasks.filter((task) => task.id !== id));
     };
 
     return (
@@ -36,15 +44,15 @@ export default function Task({ task }) {
             <Dialog
                 open={open}
                 handleClose={handleClose}
-                task={{id,title}}
+                task={{ id, title, isCompleted }}
                 handleComplete={handleComplete}
             />
-            <Card sx={{ maxWidth: 275 }} className={classes.root} onClick={handleClickOpen} >
-                <CardContent>
-                    <Typography variant="h5" component="div">
-                        Task #{id}
+            <Card className={classes.root} onClick={handleClickOpen} >
+                <CardContent sx={{ height: 50 }}>
+                    <Typography variant="h5" noWrap>
+                        Task {id}
                     </Typography>
-                    <Typography variant="h6" component="div">
+                    <Typography variant="h6" noWrap>
                         {title}
                     </Typography>
                 </CardContent>
